@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img" aria-label="씨앗부터 숲까지 자라는 타일이 놓인 5×5 보드">
+  <defs>
+    <symbol id="s1" viewBox="0 0 48 48">
+      <path fill="currentColor" d="M24 7c8 8 13 15 13 23a13 13 0 0 1-26 0c0-8 5-15 13-23z"/>
+    </symbol>
+    <symbol id="s2" viewBox="0 0 48 48">
+      <path fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" d="M24 42V22M14 42h20"/>
+      <path fill="currentColor" d="M24 27C24 17 16 12 7 12c0 10 7 15 17 15zM24 22c0-9 7-14 17-14 0 10-7 14-17 14z"/>
+    </symbol>
+    <symbol id="s3" viewBox="0 0 48 48">
+      <path fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" d="M24 45V14"/>
+      <path fill="currentColor" d="M24 36c-2-7-8-10-16-10 1 7 8 11 16 10zM24 36c2-7 8-10 16-10-1 7-8 11-16 10zM24 25c-1-6-6-9-13-9 1 6 6 10 13 9zM24 25c1-6 6-9 13-9-1 6-6 10-13 9zM24 16c-4-4-4-9 0-13 4 4 4 9 0 13z"/>
+    </symbol>
+    <symbol id="s4" viewBox="0 0 48 48">
+      <rect fill="currentColor" x="21" y="26" width="6" height="19" rx="1.5"/>
+      <circle fill="currentColor" cx="24" cy="14" r="11"/>
+      <circle fill="currentColor" cx="13.5" cy="23" r="9.5"/>
+      <circle fill="currentColor" cx="34.5" cy="23" r="9.5"/>
+    </symbol>
+    <symbol id="s5" viewBox="0 0 48 48">
+      <g fill="currentColor" opacity="0.62">
+        <path d="M10 15l7 11h-3.5l6 9H.5l6-9H3z"/>
+        <path d="M38 15l-7 11h3.5l-6 9h19l-6-9H45z"/>
+        <rect x="8.5" y="35" width="3" height="8"/>
+        <rect x="36.5" y="35" width="3" height="8"/>
+      </g>
+      <path fill="currentColor" d="M24 4l10 15h-5l8 13H11l8-13h-5z"/>
+      <rect fill="currentColor" x="22" y="32" width="4" height="12"/>
+    </symbol>
+    <symbol id="sx" viewBox="0 0 48 48">
+      <path fill="currentColor" fill-opacity="0.55" d="M13 12l14-6 13 9 4 16-12 11-19-2-9-13z"/>
+      <path fill="currentColor" d="M13 12l14-6 13 9-9 8-14-1zM17 22l14 1 1 19-19-2z"/>
+    </symbol>
+    <g id="t1"><rect width="32" height="32" rx="6" fill="#d9f0de"/><use href="#s1" x="4" y="4" width="24" height="24" color="#14532d"/></g>
+    <g id="t2"><rect width="32" height="32" rx="6" fill="#a9e0b5"/><use href="#s2" x="4" y="4" width="24" height="24" color="#14532d"/></g>
+    <g id="t3"><rect width="32" height="32" rx="6" fill="#5cbf77"/><use href="#s3" x="4" y="4" width="24" height="24" color="#0f2e1a"/></g>
+    <g id="t4"><rect width="32" height="32" rx="6" fill="#1a7f37"/><use href="#s4" x="4" y="4" width="24" height="24" color="#ffffff"/></g>
+    <g id="t5"><rect width="32" height="32" rx="6" fill="#0f4d24"/><use href="#s5" x="4" y="4" width="24" height="24" color="#ffffff"/></g>
+    <g id="tx"><rect width="32" height="32" rx="14" fill="#6b7280"/><use href="#sx" x="4" y="4" width="24" height="24" color="#ffffff"/></g>
+    <g id="row" fill="#f1f8f3">
+      <rect x="8" width="32" height="32" rx="6"/>
+      <rect x="46" width="32" height="32" rx="6"/>
+      <rect x="84" width="32" height="32" rx="6"/>
+      <rect x="122" width="32" height="32" rx="6"/>
+      <rect x="160" width="32" height="32" rx="6"/>
+    </g>
+  </defs>
+  <rect width="200" height="200" rx="14" fill="#dcefe2"/>
+  <use href="#row" y="8"/>
+  <use href="#row" y="46"/>
+  <use href="#row" y="84"/>
+  <use href="#row" y="122"/>
+  <use href="#row" y="160"/>
+  <use href="#t1" x="8" y="8"/>
+  <use href="#tx" x="84" y="8"/>
+  <use href="#t2" x="122" y="8"/>
+  <use href="#t3" x="46" y="46"/>
+  <use href="#t1" x="122" y="46"/>
+  <use href="#t4" x="160" y="46"/>
+  <use href="#t2" x="8" y="84"/>
+  <use href="#t5" x="84" y="84"/>
+  <use href="#tx" x="160" y="84"/>
+  <use href="#t4" x="46" y="122"/>
+  <use href="#t1" x="84" y="122"/>
+  <use href="#t3" x="122" y="122"/>
+  <use href="#t5" x="8" y="160"/>
+  <use href="#t2" x="84" y="160"/>
+  <use href="#t1" x="160" y="160"/>
+</svg>

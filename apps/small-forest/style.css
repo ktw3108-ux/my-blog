@@ -1,0 +1,513 @@
+/* 작은 숲 키우기 스타일. 블로그 CSS에 의존하지 않는다. */
+
+:root {
+  --bg: #ffffff;
+  --bg-soft: #f5f6f8;
+  --text: #1d2127;
+  --text-muted: #5c6570;
+  --border: #e4e7eb;
+  --green: #1a7f37;
+  --board-bg: #dcefe2;
+  --cell-bg: #f1f8f3;
+  --stage-1-edge: #7cc28f;
+  --stage-1-bg: #d9f0de;
+  --stage-1-fg: #14532d;
+  --stage-2-bg: #a9e0b5;
+  --stage-2-fg: #14532d;
+  --stage-3-bg: #5cbf77;
+  --stage-3-fg: #0f2e1a;
+  --stage-4-bg: #1a7f37;
+  --stage-4-fg: #ffffff;
+  --stage-5-bg: #0f4d24;
+  --stage-5-fg: #ffffff;
+  --stone-bg: #6b7280;
+  --stone-fg: #ffffff;
+
+  --overlay: color-mix(in srgb, var(--bg) 88%, transparent);
+  --font-sans: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard",
+    "Noto Sans KR", "Malgun Gothic", "Segoe UI", Roboto, sans-serif;
+  --gutter: 16px;
+  --space: 1rem;
+  --space-sm: 0.5rem;
+  --board-gap: 0.5rem;
+  --radius: 0.75rem;
+  --radius-sm: 0.5rem;
+  --touch: 2.75rem;
+  --slide-time: 120ms;
+  --pop-time: 150ms;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #15171c;
+    --bg-soft: #1e2128;
+    --text: #e4e6ea;
+    --text-muted: #9aa3ae;
+    --border: #2c3039;
+    --green: #4ac26b;
+    --board-bg: #1a2a20;
+    --cell-bg: #212f27;
+    --stage-1-edge: #3f7a56;
+    --stage-1-bg: #24402e;
+    --stage-1-fg: #c9f0d3;
+    --stage-2-bg: #2a6140;
+    --stage-2-fg: #e4f7e9;
+    --stage-3-bg: #2a7d4a;
+    --stage-3-fg: #ffffff;
+    --stage-4-bg: #4ac26b;
+    --stage-4-fg: #0d1f14;
+    --stage-5-bg: #a6e8b8;
+    --stage-5-fg: #0d1f14;
+    --stone-bg: #8a919c;
+    --stone-fg: #15171c;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #15171c;
+  --bg-soft: #1e2128;
+  --text: #e4e6ea;
+  --text-muted: #9aa3ae;
+  --border: #2c3039;
+  --green: #4ac26b;
+  --board-bg: #1a2a20;
+  --cell-bg: #212f27;
+  --stage-1-edge: #3f7a56;
+  --stage-1-bg: #24402e;
+  --stage-1-fg: #c9f0d3;
+  --stage-2-bg: #2a6140;
+  --stage-2-fg: #e4f7e9;
+  --stage-3-bg: #2a7d4a;
+  --stage-3-fg: #ffffff;
+  --stage-4-bg: #4ac26b;
+  --stage-4-fg: #0d1f14;
+  --stage-5-bg: #a6e8b8;
+  --stage-5-fg: #0d1f14;
+  --stone-bg: #8a919c;
+  --stone-fg: #15171c;
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+html,
+body {
+  overscroll-behavior: none;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  word-break: keep-all;
+}
+
+h1,
+h2,
+p,
+dl,
+dd,
+ol {
+  margin: 0;
+  padding: 0;
+}
+
+:focus-visible {
+  outline: 3px solid var(--green);
+  outline-offset: 2px;
+}
+
+.svg-sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* 전체 틀 */
+.app {
+  max-width: 56rem;
+  margin-inline: auto;
+  padding: var(--space-sm) var(--gutter) calc(var(--space) * 2);
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space);
+  margin-bottom: var(--space-sm);
+}
+
+.app-title {
+  font-size: 1.25rem;
+  line-height: 1.3;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  min-width: var(--touch);
+  min-height: var(--touch);
+  color: var(--green);
+  text-decoration: none;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space);
+}
+
+/* 보드 */
+.board-wrap {
+  position: relative;
+  width: min(100%, 30rem);
+  aspect-ratio: 1;
+  margin-inline: auto;
+}
+
+.board {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: var(--board-gap);
+  border-radius: var(--radius);
+  background: var(--board-bg);
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.cells {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  gap: var(--board-gap);
+  height: 100%;
+}
+
+.cell {
+  border-radius: var(--radius-sm);
+  background: var(--cell-bg);
+}
+
+.tiles {
+  position: absolute;
+  inset: var(--board-gap);
+}
+
+.tile {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: calc((100% - 4 * var(--board-gap)) / 5);
+  height: calc((100% - 4 * var(--board-gap)) / 5);
+  transform: translate(
+    calc(var(--col) * (100% + var(--board-gap))),
+    calc(var(--row) * (100% + var(--board-gap)))
+  );
+  transition: transform var(--slide-time) ease-out;
+}
+
+.tile.consumed {
+  z-index: 0;
+}
+
+.tile-face {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-sm);
+}
+
+.tile-level {
+  position: absolute;
+  top: 0.125rem;
+  left: 0.3125rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.tile-art {
+  width: 62%;
+  height: 62%;
+  margin-top: 8%;
+}
+
+.stage-1 { background: var(--stage-1-bg); color: var(--stage-1-fg); box-shadow: inset 0 0 0 2px var(--stage-1-edge); }
+.stage-2 { background: var(--stage-2-bg); color: var(--stage-2-fg); }
+.stage-3 { background: var(--stage-3-bg); color: var(--stage-3-fg); }
+.stage-4 { background: var(--stage-4-bg); color: var(--stage-4-fg); }
+.stage-5 { background: var(--stage-5-bg); color: var(--stage-5-fg); }
+
+/* 돌은 색뿐 아니라 울퉁불퉁한 외곽선으로도 구분한다 */
+.stone {
+  border-radius: 46% 54% 42% 58% / 56% 44% 58% 42%;
+  background: var(--stone-bg);
+  color: var(--stone-fg);
+}
+
+.stone .tile-art {
+  margin-top: 0;
+}
+
+.merged { animation: merge-pop var(--pop-time) ease-out; }
+.appear { animation: tile-appear var(--pop-time) ease-out; }
+.drop { animation: stone-drop var(--pop-time) ease-in; }
+.breaking { animation: stone-break var(--pop-time) ease-in forwards; }
+
+@keyframes merge-pop {
+  50% { transform: scale(1.14); }
+}
+
+@keyframes tile-appear {
+  from { transform: scale(0.3); opacity: 0; }
+}
+
+@keyframes stone-drop {
+  from { transform: translateY(-70%) scale(1.15); opacity: 0; }
+}
+
+@keyframes stone-break {
+  to { transform: scale(0.3); opacity: 0; }
+}
+
+/* 첫 숲 안내 */
+.notice {
+  position: absolute;
+  bottom: calc(100% + var(--space-sm));
+  left: 50%;
+  z-index: 2;
+  width: max-content;
+  max-width: calc(100% - 2 * var(--space));
+  padding: var(--space-sm) var(--space);
+  transform: translateX(-50%);
+  border-radius: var(--radius-sm);
+  background: var(--stage-5-bg);
+  color: var(--stage-5-fg);
+  font-weight: 700;
+  pointer-events: none;
+}
+
+/* 게임 오버 덮개 */
+.over {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: var(--space);
+  border-radius: var(--radius);
+  background: var(--overlay);
+  text-align: center;
+}
+
+.over-title {
+  font-size: 1.375rem;
+  line-height: 1.3;
+}
+
+.over-score {
+  font-size: 1.125rem;
+}
+
+.over-record {
+  color: var(--green);
+  font-weight: 700;
+}
+
+/* 패널 */
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space);
+  min-width: 0;
+}
+
+.scores {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-sm);
+}
+
+.score-item {
+  padding: var(--space-sm);
+  border-radius: var(--radius-sm);
+  background: var(--bg-soft);
+  text-align: center;
+}
+
+.score-item dt {
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+}
+
+.score-item dd {
+  font-size: 1.25rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.4;
+}
+
+.stone-text {
+  margin-bottom: 0.375rem;
+}
+
+.stone-ticks {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 0.25rem;
+}
+
+.tick {
+  height: 0.5rem;
+  border: 1px solid var(--text-muted);
+  border-radius: 0.25rem;
+}
+
+.tick.on {
+  background: var(--stone-bg);
+  border-color: var(--stone-bg);
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.dir-buttons,
+.action-buttons {
+  display: grid;
+  gap: var(--space-sm);
+}
+
+.dir-buttons {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.action-buttons {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.button {
+  min-width: var(--touch);
+  min-height: var(--touch);
+  padding: 0 var(--space);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-soft);
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}
+
+.button:hover {
+  border-color: var(--green);
+}
+
+.button.primary {
+  border-color: var(--green);
+  background: var(--green);
+  color: var(--bg);
+  font-weight: 700;
+}
+
+.legend {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--space-sm);
+  list-style: none;
+}
+
+.legend-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.8125rem;
+  text-align: center;
+}
+
+.legend-swatch {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--radius-sm);
+}
+
+.legend-swatch svg {
+  width: 70%;
+  height: 70%;
+}
+
+.help {
+  margin-top: var(--space-sm);
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+@media (min-width: 768px) {
+  .app {
+    padding-top: var(--space);
+  }
+
+  .layout {
+    grid-template-columns: minmax(0, 30rem) minmax(16rem, 22rem);
+    justify-content: center;
+    align-items: start;
+    gap: calc(var(--space) * 1.5);
+  }
+
+  .board-wrap {
+    margin-inline: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tile {
+    transition: none;
+  }
+
+  .tile-face {
+    animation: none !important;
+  }
+}

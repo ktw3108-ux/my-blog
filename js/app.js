@@ -14,6 +14,7 @@ const SITE_DESCRIPTION = '배운 것과 생각한 것을 마크다운으로 기�
 const CHARS_PER_MINUTE = 500; // 한국어 기준 대략적인 읽기 속도
 
 const main = document.querySelector('.site-main');
+const appCards = document.querySelector('#app-cards');
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 let postsPromise = null;
 
@@ -189,7 +190,9 @@ function renderList(posts, tag) {
     : h('p', { class: 'empty' }, tag ? '이 태그의 글이 없습니다.' : '아직 작성된 글이 없습니다.');
 
   document.title = tag ? `#${tag} · ${SITE_TITLE}` : SITE_TITLE;
-  main.replaceChildren(header, content);
+  // 미니 웹앱 카드는 전체 목록에서만 보여 준다
+  const cards = !tag && appCards ? appCards.content.cloneNode(true) : '';
+  main.replaceChildren(header, cards, content);
 }
 
 function navLink(post, label, className) {

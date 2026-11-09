@@ -227,6 +227,45 @@ a {
   font-weight: 600;
 }
 
+.app-cards {
+  margin-bottom: 2rem;
+}
+
+.app-card {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-soft);
+  color: var(--text);
+  text-decoration: none;
+}
+
+.app-card:hover {
+  border-color: var(--accent);
+}
+
+.app-card img {
+  flex: none;
+  width: 96px;
+  height: 96px;
+  border-radius: var(--radius);
+}
+
+.app-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.app-card-body span {
+  color: var(--text-muted);
+  font-size: 0.9375rem;
+}
+
 .post-list {
   margin: 0;
   padding: 0;
