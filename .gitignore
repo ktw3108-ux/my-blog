@@ -1,0 +1,13 @@
+# 의존성 (현재는 없지만 실수로 추가되는 것을 방지)
+node_modules/
+
+# Claude Code 개인 설정
+.claude/settings.local.json
+
+# 로그
+*.log
+
+# 운영체제가 만드는 파일
+Thumbs.db
+desktop.ini
+.DS_Store

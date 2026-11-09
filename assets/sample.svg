@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 280" role="img" aria-label="예시 그림">
+  <rect width="640" height="280" rx="16" fill="#e9effc"/>
+  <rect x="80" y="70" width="200" height="140" rx="12" fill="#ffffff" stroke="#2457d6" stroke-width="3"/>
+  <path d="M110 110h140M110 140h110M110 170h130" stroke="#9aa3ae" stroke-width="10" stroke-linecap="round"/>
+  <path d="M310 140h40" stroke="#2457d6" stroke-width="6" stroke-linecap="round"/>
+  <path d="M340 125l18 15-18 15" fill="none" stroke="#2457d6" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="380" y="70" width="200" height="140" rx="12" fill="#15171c"/>
+  <path d="M410 110h140M410 140h110M410 170h130" stroke="#8ab4ff" stroke-width="10" stroke-linecap="round"/>
+</svg>
