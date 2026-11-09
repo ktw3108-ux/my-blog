@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="16×16 격자에 도트를 찍어 PNG로 저장하는 그림판">
+  <title>픽셀 아트 에디터</title>
+  <link rel="icon" href="./preview.svg" type="image/svg+xml">
+  <script>
+    // 첫 페인트 전에 블로그에서 고른 테마를 적용해 깜빡임을 막는다.
+    (function () {
+      try {
+        var saved = localStorage.getItem('theme');
+        if (saved === 'dark' || saved === 'light') {
+          document.documentElement.setAttribute('data-theme', saved);
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="./style.css">
+  <script type="module" src="./ui.js"></script>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <h1 class="app-title">픽셀 아트 에디터</h1>
+      <a class="back-link" href="../../">← 블로그로</a>
+    </header>
+
+    <main class="layout">
+      <div id="grid-wrap" class="grid-wrap">
+        <canvas id="grid" class="grid" tabindex="0" role="application" aria-label="16×16 그림판" aria-describedby="help">16×16 격자에 점을 찍어 그림을 그리는 그림판입니다. 이 브라우저에서는 캔버스를 표시할 수 없습니다.</canvas>
+      </div>
+
+      <div class="panel">
+        <div class="tool-row">
+          <fieldset class="group">
+            <legend class="sr-only">도구</legend>
+            <div class="tools">
+              <label class="tool">
+                <input class="radio" type="radio" name="tool" value="pen" checked>
+                <span class="tool-face">펜</span>
+              </label>
+              <label class="tool">
+                <input class="radio" type="radio" name="tool" value="eraser">
+                <span class="tool-face">지우개</span>
+              </label>
+            </div>
+          </fieldset>
+          <p class="current">
+            <span id="current-swatch" class="current-swatch"></span>
+            <span id="current-text"></span>
+          </p>
+        </div>
+
+        <fieldset class="group">
+          <legend class="sr-only">색</legend>
+          <div id="palette" class="palette"></div>
+        </fieldset>
+
+        <div class="actions">
+          <button id="undo" class="button" type="button" aria-disabled="true">되돌리기</button>
+          <button id="redo" class="button" type="button" aria-disabled="true">다시 실행</button>
+          <button id="clear" class="button" type="button">전체 지우기</button>
+        </div>
+
+        <div class="save-row">
+          <label class="sr-only" for="export-size">PNG 크기</label>
+          <select id="export-size" class="select">
+            <option value="20">320×320 (20배 확대)</option>
+            <option value="1">16×16 (원본)</option>
+          </select>
+          <button id="save" class="button button-save" type="button">PNG 저장</button>
+        </div>
+
+        <p id="status" class="status" role="status"></p>
+        <p id="help" class="help">누르거나 끌어서 그려요. 키보드는 방향키 이동, Space 칠하기, Shift+방향키 이어 칠하기, P 펜, E 지우개, [ ] 색 바꾸기예요.</p>
+      </div>
+    </main>
+  </div>
+
+  <div id="live" class="sr-only" aria-live="polite"></div>
+
+  <noscript>
+    <p>이 그림판은 JavaScript가 필요합니다.</p>
+  </noscript>
+</body>
+</html>

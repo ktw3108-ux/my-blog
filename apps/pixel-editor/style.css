@@ -1,0 +1,385 @@
+/* 픽셀 아트 에디터 스타일. 블로그 CSS에 의존하지 않는다. */
+
+:root {
+  --bg: #ffffff;
+  --bg-soft: #f5f6f8;
+  --text: #1d2127;
+  --text-muted: #5c6570;
+  --border: #e4e7eb;
+  --accent: #2457d6;
+  --accent-fg: #ffffff;
+  --checker-a: #d3d7de;
+  --checker-b: #bfc4cd;
+  --grid-line: rgba(29, 33, 39, 0.22);
+  --cursor-outer: #000000;
+  --cursor-inner: #ffffff;
+
+  --font-sans: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard",
+    "Noto Sans KR", "Malgun Gothic", "Segoe UI", Roboto, sans-serif;
+  --font-size: 1rem;
+  --font-size-sm: 0.9375rem;
+  --font-size-xs: 0.875rem;
+  --gutter: 16px;
+  --space: 1rem;
+  --space-sm: 0.5rem;
+  --palette-gap: 4px;
+  --radius: 0.5rem;
+  --touch: 44px;
+  --swatch-small: 1.25rem;
+  --ring-width: 3px;
+  --ring-offset: 2px;
+  --panel-width: 20rem;
+  --grid-max: 32rem;
+  --grid-height-gap: 8rem;
+  --app-max: 56rem;
+  --disabled-opacity: 0.45;
+  --press-time: 120ms;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #15171c;
+    --bg-soft: #1e2128;
+    --text: #e4e6ea;
+    --text-muted: #9aa3ae;
+    --border: #2c3039;
+    --accent: #8ab4ff;
+    --accent-fg: #15171c;
+    --checker-a: #2b2f38;
+    --checker-b: #383d48;
+    --grid-line: rgba(228, 230, 234, 0.18);
+    --cursor-outer: #000000;
+    --cursor-inner: #ffffff;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #15171c;
+  --bg-soft: #1e2128;
+  --text: #e4e6ea;
+  --text-muted: #9aa3ae;
+  --border: #2c3039;
+  --accent: #8ab4ff;
+  --accent-fg: #15171c;
+  --checker-a: #2b2f38;
+  --checker-b: #383d48;
+  --grid-line: rgba(228, 230, 234, 0.18);
+  --cursor-outer: #000000;
+  --cursor-inner: #ffffff;
+  color-scheme: dark;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  overscroll-behavior: none;
+}
+
+/* 스크롤바 유무로 격자 폭이 바뀌어 크기 계산이 끝없이 반복되는 것을 막는다. */
+html {
+  scrollbar-gutter: stable;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: var(--font-size);
+  line-height: 1.5;
+  word-break: keep-all;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.app {
+  max-width: var(--app-max);
+  margin-inline: auto;
+  padding: var(--space-sm) var(--gutter) var(--space);
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space);
+  margin-bottom: var(--space-sm);
+}
+
+.app-title {
+  margin: 0;
+  font-size: 1.125rem;
+  line-height: 1.3;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  min-width: var(--touch);
+  min-height: var(--touch);
+  color: var(--accent);
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space);
+}
+
+.grid-wrap {
+  width: 100%;
+}
+
+/* 테두리는 box-shadow로 그린다. border를 쓰면 포인터 좌표 계산의 기준 상자가 어긋난다. */
+.grid {
+  display: block;
+  margin-inline: auto;
+  box-shadow: 0 0 0 1px var(--text-muted);
+  cursor: crosshair;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space);
+  min-width: 0;
+}
+
+.group {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.tool-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-sm) var(--space);
+}
+
+.tools {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+/* 라디오는 투명하게 칸 전체를 덮어 터치 대상과 포커스를 그대로 맡는다. */
+.radio {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.tool {
+  position: relative;
+  display: block;
+}
+
+.tool-face {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--touch);
+  min-height: var(--touch);
+  padding-inline: 0.75rem;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: var(--font-size-sm);
+  transition: background-color var(--press-time), color var(--press-time);
+}
+
+.radio:checked + .tool-face {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-fg);
+}
+
+.current {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin: 0;
+  font-size: var(--font-size-sm);
+}
+
+.current-swatch {
+  flex: none;
+  width: var(--swatch-small);
+  height: var(--swatch-small);
+  border: 1px solid var(--text-muted);
+  border-radius: 0.25rem;
+}
+
+.palette {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: var(--palette-gap);
+}
+
+.color {
+  position: relative;
+  display: block;
+}
+
+.swatch {
+  display: block;
+  height: var(--touch);
+  border: 1px solid var(--text-muted);
+  border-radius: 0.25rem;
+}
+
+.radio:checked + .swatch {
+  position: relative;
+  z-index: 1;
+  outline: var(--ring-width) solid var(--text);
+  outline-offset: var(--ring-offset);
+}
+
+.radio:focus-visible + .swatch,
+.radio:focus-visible + .tool-face {
+  position: relative;
+  z-index: 2;
+  outline: var(--ring-width) solid var(--accent);
+  outline-offset: var(--ring-offset);
+}
+
+.actions {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.save-row {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.button {
+  flex: 1 1 0;
+  min-width: var(--touch);
+  min-height: var(--touch);
+  padding: 0 0.25rem;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font: inherit;
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  transition: background-color var(--press-time);
+}
+
+.button[aria-disabled="true"] {
+  opacity: var(--disabled-opacity);
+  cursor: default;
+}
+
+.button-save {
+  flex: none;
+  padding-inline: 0.75rem;
+  font-weight: 600;
+}
+
+@media (hover: hover) {
+  .button:not([aria-disabled="true"]):hover,
+  .radio:not(:checked):hover + .tool-face {
+    background: var(--border);
+  }
+}
+
+.select {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: var(--touch);
+  padding-inline: 0.5rem;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font: inherit;
+  font-size: var(--font-size-sm);
+}
+
+.back-link:focus-visible,
+.grid:focus-visible,
+.button:focus-visible,
+.select:focus-visible {
+  outline: var(--ring-width) solid var(--accent);
+  outline-offset: var(--ring-offset);
+}
+
+.status {
+  min-height: 1.5em;
+  margin: 0;
+  font-size: var(--font-size-sm);
+}
+
+.help {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--font-size-xs);
+}
+
+@media (min-width: 768px) {
+  .app {
+    padding-top: var(--space);
+  }
+
+  .topbar {
+    margin-bottom: var(--space);
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) var(--panel-width);
+    align-items: start;
+    gap: 2rem;
+  }
+
+  .grid-wrap {
+    width: min(100%, var(--grid-max), calc(100dvh - var(--grid-height-gap)));
+    justify-self: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tool-face,
+  .button {
+    transition: none;
+  }
+}
